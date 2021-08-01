@@ -6,7 +6,7 @@ namespace Application.Enums
 {
     public enum Roles
     {
-        SuperAdmin,
+        Root,
         Admin,
         Moderator,
         Basic

@@ -13,9 +13,9 @@ Check out the [Project Page](https://www.codewithmukesh.com/project/aspnet-core-
 Read the [Changelog file](https://github.com/iammukeshm/CleanArchitecture.WebApi/blob/master/CHANGELOG.md) to see the new changes.
 
 ## Releases
-v1.1 - Stable Release - [Download the Stable Release](https://github.com/iammukeshm/CleanArchitecture.WebApi/releases/tag/v1.1) 
+v1.1 - Stable Release - [Download the Stable Release](https://github.com/iammukeshm/CleanArchitecture.WebApi/releases/tag/v1.1)
 
-v1.0-preview - [Download the first Preview here](https://github.com/iammukeshm/CleanArchitecture.WebApi/releases/tag/v1.0-preview) 
+v1.0-preview - [Download the first Preview here](https://github.com/iammukeshm/CleanArchitecture.WebApi/releases/tag/v1.0-preview)
 
 ## v1.1
 
@@ -67,7 +67,7 @@ The Project currently uses MSSQL as the default Data Provider. If you are more c
 #### For MySql:
 run `dotnet add package Pomelo.EntityFrameworkCore.MySql --version 3.1.2` (remember to do this on both projects)
 #### For PostgreSQL:
-run 
+run
 ```cli
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL.Design
@@ -76,52 +76,30 @@ dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL.Design
 
 4. on `IdentityContext.cs` comment `builder.HasDefaultSchema("Identity");` because ef doesn't support that on mysql
 
-5. cd to `{YourProjectName}.Infrastructure.Identity` and run
-   - `dotnet ef database update --startup-project ../{YourProjectName}.WebApi/{YourProjectName}.WebApi.csproj -c "IdentityContext"`
-   - `dotnet ef migrations add Initial --startup-project ../{YourProjectName}.WebApi/{YourProjectName}.WebApi.csproj -c "IdentityContext"`
+5. cd to `Infrastructure.Identity` and run
+   - `dotnet ef database update --startup-project ../WebApi/WebApi.csproj -c "IdentityContext"`
+   - `dotnet ef migrations add Initial --startup-project ../WebApi/WebApi.csproj -c "IdentityContext"`
 
 6. cd to `{YourProjectName}.Infrastructure.Persistence` and run
-   - `dotnet ef database update --startup-project ../{YourProjectName}.WebApi/{YourProjectName}.WebApi.csproj -c "ApplicationDbContext"`
-   - `dotnet ef migrations add Initial --startup-project ../{YourProjectName}.WebApi/{YourProjectName}.WebApi.csproj -c "ApplicationDbContext"`
-   
+   - `dotnet ef database update --startup-project ../WebApi/WebApi.csproj -c "ApplicationDbContext"`
+   - `dotnet ef migrations add Initial --startup-project ../WebApi/WebApi.csproj -c "ApplicationDbContext"`
+
 The above guide (To use MySQL) was contributed by [geekz-reno](https://github.com/geekz-reno).
 
 ### Default Roles & Credentials
 As soon you build and run your application, default users and roles get added to the database.
 
 Default Roles are as follows.
-- SuperAdmin
+- Root
 - Admin
 - Moderator
 - Basic
 
 Here are the credentials for the default users.
-- Email - superadmin@gmail.com  / Password - 123Pa$$word!
-- Email - basic@gmail.com  / Password - 123Pa$$word!
+- Email - root@example.com  / Password - 123Pa$$word!
+- Email - basic@example.com  / Password - 123Pa$$word!
 
 You can use these default credentials to generate valid JWTokens at the ../api/account/authenticate endpoint.
-
-## Purpose of this Project
-
-Does it really make sense to Setup your ASP.NET Core Solution everytime you start a new WebApi Project ? Aren't we wasting quite a lot of time in doing this over and over gain?
-
-This is the exact Problem that I intend to solve with this Full-Fledged ASP.NET Core 3.1 WebApi Solution Template, that also follows various principles of Clean Architecture.
-
-The primary goal is to create a Full-Fledged implementation, that is well documented along with the steps taken to build this Solution from Scratch. This Solution Template will also be available within Visual Studio 2019 (by installing the required Nuget Package / Extension).
-- Demonstrate Clean Monolith Architecture in ASP.NET Core 3.1 
-- This is not a Proof of Concept
-- Implementation that is ready for Production
-- Integrate the most essential libraries and packages
-
-## Give a Star ⭐️
-If you found this Implementation helpful or used it in your Projects, do give it a star. Thanks!
-Or, If you are feeling really generous, [Support the Project with a small contribution!](https://www.buymeacoffee.com/codewithmukesh)
-
-## Technologies
-- ASP.NET Core 3.1 WebApi
-- REST Standards
-- .NET Core 3.1 / Standard 2.1 Libraries
-
 ## Features
 - [x] Onion Architecture
 - [x] CQRS with MediatR Library

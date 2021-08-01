@@ -25,18 +25,12 @@ namespace Infrastructure.Identity
     {
         public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                services.AddDbContext<IdentityContext>(options =>
-                    options.UseInMemoryDatabase("IdentityDb"));
-            }
-            else
-            {
-                services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(
+            services.AddDbContext<IdentityContext>(options =>
+                options.UseNpgsql(
                     configuration.GetConnectionString("IdentityConnection"),
-                    b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
-            }
+                    b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName))
+                    .UseSnakeCaseNamingConvention());
+
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
             #region Services
             services.AddTransient<IAccountService, AccountService>();

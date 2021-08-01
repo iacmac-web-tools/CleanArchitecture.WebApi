@@ -12,9 +12,11 @@ namespace WebApi.Extensions
         public static void UseSwaggerExtension(this IApplicationBuilder app)
         {
             app.UseSwagger();
+            // app.UseSwaggerAuthorized(); // TODO: Add authorized
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CleanArchitecture.WebApi");
+                c.RoutePrefix = "swagger";
             });
         }
         public static void UseErrorHandlingMiddleware(this IApplicationBuilder app)

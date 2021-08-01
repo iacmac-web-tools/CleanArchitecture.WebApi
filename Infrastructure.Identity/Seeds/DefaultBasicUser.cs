@@ -17,13 +17,13 @@ namespace Infrastructure.Identity.Seeds
             var defaultUser = new ApplicationUser
             {
                 UserName = "basicuser",
-                Email = "basicuser@gmail.com",
+                Email = "basicuser@example.com",
                 FirstName = "John",
                 LastName = "Doe",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
-            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            if (userManager.Users.All(u => u.Email != defaultUser.Email))
             {
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)

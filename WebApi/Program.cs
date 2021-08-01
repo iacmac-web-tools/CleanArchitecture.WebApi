@@ -13,6 +13,9 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Identity.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistence.Contexts;
 
 namespace WebApi
 {
@@ -23,6 +26,7 @@ namespace WebApi
             //Read Configuration from appSettings
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
                 .Build();
 
             //Initialize Logger
@@ -34,6 +38,20 @@ namespace WebApi
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                try
+                {
+                    var identityContext = services.GetRequiredService<IdentityContext>();
+                    await identityContext.Database.MigrateAsync();
+
+                    var persistenceContext = services.GetRequiredService<ApplicationDbContext>();
+                    await persistenceContext.Database.MigrateAsync();
+
+                    Log.Information("Migrations Applied");
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "An error occurred migrating the DB");
+                }
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -61,6 +79,9 @@ namespace WebApi
             .UseSerilog() //Uses Serilog instead of default .NET Logger
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls(Environment.GetEnvironmentVariable("ASPNETCORE_URLS"));
+                    webBuilder.UseKestrel(options =>{options.Limits.MaxRequestBodySize = 209715200;});
+
                     webBuilder.UseStartup<Startup>();
                 });
     }
